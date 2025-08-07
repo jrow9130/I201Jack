@@ -1,0 +1,116 @@
+/* .header{
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    height: 125px;
+    display: flex;            /* Use flexbox to align content horizontally */
+    /* justify-content: space-between; Pushes h1 to left, image to right */
+    /* align-items: center;      Vertically center h1 and image */
+    /* padding: 5px 10px;
+    color: white;
+}
+
+.headerimage{
+    max-height: 120px;
+    width: auto;
+}
+
+.body{
+    top: 144px;
+    left: 118px;
+    right: 114px;
+    bottom: 39px;
+}
+.left{
+    top: 144px;
+    left: 5px;
+    width: 110px;
+    bottom: 39px;
+}
+
+.right{
+    top: 144px;
+    right: 5px;
+    width: 110px;
+    bottom: 39px;
+}
+
+.footer{
+    bottom: 5px;
+    height: 35px;
+    left: 5px;
+    right: 5px;
+    text-align: center;
+}
+
+.test{
+    background-color:#0a5375;
+    border: 2px solid white;
+    color: white;
+} */
+
+/* .position{
+    position: absolute;
+} */
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #ADD8E6;
+}
+
+/* HEADER */
+.header {
+    border: 5px solid #002639;
+    display: flex;             /* Flex to position nav left, image right */
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    box-sizing: border-box;    /* Include padding in height */
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.nav-links a {
+    margin-right: 10px;
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.header-image img {
+    max-height: 100px; /* Keeps image from being too tall */
+    width: auto;
+}
+
+.tabeauPlaceholder,
+.tabeauPlaceholder object {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+}
+/* BODY */
+.body {
+    border: 5px solid #002639;
+    margin: 10px 5px; /* spacing from edges */
+    padding: 10px;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* FOOTER */
+.footer {
+    border: 5px solid #002639;
+    margin: 10px 5px;
+    padding: 10px;
+    text-align: center;
+    box-sizing: border-box;
+}
+.big{
+    font-size:xx-large;
+    font-weight: bold;
+    color: blueviolet;
+    font-family: fantasy;
+}
+

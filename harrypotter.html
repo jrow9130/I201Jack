@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harry Potter Trivia</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+            background: #f8f4f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .game-container {
+            background: #fff;
+            max-width: 600px;
+            width: 90%;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+        h1 {
+            font-family: 'Lora', serif;
+            color: #4b2e83;
+            margin-bottom: 20px;
+        }
+        .question {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            padding: 10px 15px;
+            font-size: 1rem;
+            border: 2px solid #4b2e83;
+            border-radius: 5px;
+            cursor: pointer;
+            background: #f8f4f0;
+            transition: all 0.3s ease;
+        }
+        .option-btn:hover {
+            background: #4b2e83;
+            color: #fff;
+            transform: scale(1.05);
+        }
+        .progress {
+            margin: 15px 0;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .feedback {
+            margin-top: 15px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+        .feedback.correct {
+            color: green;
+        }
+        .feedback.incorrect {
+            color: red;
+        }
+        .score-container {
+            font-size: 1.2rem;
+            margin-top: 20px;
+        }
+        .restart-btn {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            background: #4b2e83;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+        .restart-btn:hover {
+            background: #6a44b8;
+        }
+    </style>
+</head>
+<body>
+    <a href="scratchpage.html" style="color: black;">Return Back</a>  
+    <div class="game-container">
+        <h1>Harry Potter Trivia</h1>
+        <div id="question-container">
+            <div class="progress" id="progress"></div>
+            <div class="question" id="question"></div>
+            <div class="options" id="options"></div>
+            <div class="feedback" id="feedback"></div>
+        </div>
+        <div class="score-container" id="score-container" style="display:none;">
+            <div id="final-score"></div>
+            <button class="restart-btn" onclick="startGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "What is the name of Harry Potter's owl?",
+                options: ["Hedwig", "Errol", "Crookshanks", "Scabbers"],
+                answer: "Hedwig"
+            },
+            {
+                question: "Which house at Hogwarts does Draco Malfoy belong to?",
+                options: ["Gryffindor", "Hufflepuff", "Slytherin", "Ravenclaw"],
+                answer: "Slytherin"
+            },
+            {
+                question: "What position does Harry play on his Quidditch team?",
+                options: ["Seeker", "Beater", "Chaser", "Keeper"],
+                answer: "Seeker"
+            },
+            {
+                question: "What is the spell to disarm an opponent?",
+                options: ["Expelliarmus", "Avada Kedavra", "Lumos", "Alohomora"],
+                answer: "Expelliarmus"
+            },
+            {
+                question: "Who teaches Potions in Harry's first year?",
+                options: ["Professor Snape", "Professor McGonagall", "Professor Flitwick", "Professor Sprout"],
+                answer: "Professor Snape"
+            },
+            {
+                question: "What magical device lets you see memories?",
+                options: ["Time Turner", "Invisibility Cloak", "Deluminator", "Pensieve"],
+                answer: "Pensieve"
+            },
+            {
+                question: "What is Lord Voldemort's real name?",
+                options: ["Lucius Malfoy", "Severus Snape", "Tom Riddle", "Gellert Grindelwald"],
+                answer: "Tom Riddle"
+            },
+            {
+                question: "What platform does the Hogwarts Express leave from?",
+                options: ["Platform 7", "Platform 9", "Platform 9¾", "Platform 10"],
+                answer: "Platform 9¾"
+            },
+            {
+                question: "Who is the Half-Blood Prince?",
+                options: ["Harry Potter", "Draco Malfoy", "Tom Riddle", "Severus Snape"],
+                answer: "Severus Snape"
+            },
+            {
+                question: "Which item is not a Deathly Hallow?",
+                options: ["Elder Wand", "Cloak of Invisibility", "Resurrection Stone", "Sorcerer’s Stone"],
+                answer: "Sorcerer’s Stone"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        const questionEl = document.getElementById('question');
+        const optionsEl = document.getElementById('options');
+        const progressEl = document.getElementById('progress');
+        const feedbackEl = document.getElementById('feedback');
+        const questionContainer = document.getElementById('question-container');
+        const scoreContainer = document.getElementById('score-container');
+        const finalScoreEl = document.getElementById('final-score');
+
+        function startGame() {
+            currentQuestion = 0;
+            score = 0;
+            questionContainer.style.display = 'block';
+            scoreContainer.style.display = 'none';
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const current = questions[currentQuestion];
+            questionEl.textContent = current.question;
+            optionsEl.innerHTML = '';
+            feedbackEl.textContent = '';
+            progressEl.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+
+            current.options.forEach(option => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('option-btn');
+                button.addEventListener('click', () => selectAnswer(option));
+                optionsEl.appendChild(button);
+            });
+        }
+
+        function selectAnswer(selected) {
+            const current = questions[currentQuestion];
+            if(selected === current.answer) {
+                score++;
+                feedbackEl.textContent = "Correct!";
+                feedbackEl.className = 'feedback correct';
+            } else {
+                feedbackEl.textContent = `Incorrect! The correct answer is "${current.answer}".`;
+                feedbackEl.className = 'feedback incorrect';
+            }
+
+            setTimeout(() => {
+                currentQuestion++;
+                if(currentQuestion < questions.length) {
+                    showQuestion();
+                } else {
+                    showScore();
+                }
+            }, 1500);
+        }
+
+        function showScore() {
+            questionContainer.style.display = 'none';
+            scoreContainer.style.display = 'block';
+            finalScoreEl.textContent = `You scored ${score} out of ${questions.length}!`;
+        }
+
+        startGame();
+    </script>
+</body>
+</html>
